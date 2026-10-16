@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F45 Live Boards</title>
+<style>
+ @font-face { font-family:'Montserrat'; src:url(assets/fonts/Montserrat.woff2) format('woff2'); font-weight:100 900; }
+ body{font-family:Montserrat,Arial,sans-serif;max-width:720px;margin:40px auto;padding:0 20px;color:#211551;background:#FAF8F3}
+ h1{margin-bottom:4px} p{color:#444} a{color:#D6001C;font-weight:700} li{margin:6px 0}
+</style></head>
+<body>
+<h1>F45 Live Boards</h1>
+<p>Upcoming Events – one link per studio. Add <code>&amp;demo</code> to any link to preview with sample events.</p>
+<ul id="links"></ul>
+<script src="js/config.js"></script>
+<script>
+ var ul=document.getElementById('links'), s=window.F45_CONFIG.studios;
+ Object.keys(s).forEach(function(k){var li=document.createElement('li'),a=document.createElement('a');
+  a.href='events/?studio='+k; a.textContent=s[k].name; li.appendChild(a); ul.appendChild(li);});
+</script>
+</body></html>
