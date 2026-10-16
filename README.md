@@ -2,7 +2,7 @@
 
 Always-on OptiSigns slides that update themselves from a Google Sheet.
 
-- **Upcoming Events** (`/events/?studio=...`) – live now.
+- **Upcoming Events** (`/events.html?studio=...`) – live now.
 - **Member of the Month / Business of the Month** – coming next, same repo.
 
 ## How Upcoming Events works
@@ -22,7 +22,7 @@ To pull an event early, type anything in the sheet's **Hide** column for that ro
    Name: `f45-boards`. Set it to **Public**. Click **Create repository**.
 2. On the new repo page click **uploading an existing file**.
    Unzip `f45-boards.zip` on your Mac, open the folder, select **everything inside it**
-   (index.html, README.md, events, js, assets) and drag it into the browser.
+   (all files, no folders) and drag it into the browser.
    Click **Commit changes**.
 3. Repo **Settings** → **Pages** (left sidebar) → Source: **Deploy from a branch**,
    Branch: **main**, folder **/ (root)** → **Save**.
@@ -48,7 +48,7 @@ up to ~10 minutes to reach the screen.
 
 ### 4. Add each studio to OptiSigns
 1. OptiSigns → **Files/Assets** → **Add Asset** → **Website** (under Apps).
-2. URL: `https://heathbowen-blip.github.io/f45-boards/events/?studio=uptown-phoenix`
+2. URL: `https://heathbowen-blip.github.io/f45-boards/events.html?studio=uptown-phoenix`
    (swap the studio name – the list is on the site's home page).
 3. Set the auto-refresh to **5 minutes** if the option is shown.
 4. Add it to that studio's playlist. Done – no further edits in OptiSigns.
@@ -67,4 +67,4 @@ last list they loaded.
   event details should live in that tab.
 - Anyone with the Jotform link can add an event straight to the screens – share it
   only with studio managers.
-- Fonts: Bebas Neue and Montserrat, bundled under the SIL Open Font License (see assets/fonts).
+- Fonts: Bebas Neue and Montserrat, bundled under the SIL Open Font License (see the OFL files).
