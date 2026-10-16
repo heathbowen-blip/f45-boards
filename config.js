@@ -7,7 +7,7 @@ window.F45_CONFIG = {
 
   // Paste the "Publish to web" CSV link for the Upcoming Events
   // sheet tab between the quotes. (See README, step 3.)
-  eventsCsvUrl: "",
+  eventsCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTm6O_W4mxxJJKt7GxrRqh1OK4ee2_-jxIAZjnNndYs1auFDiyydDPrOQte3Y3pKuEb1_ZdLyeew2BA/pub?gid=423535417&single=true&output=csv",
 
   // How often the screen checks for new events (minutes).
   refreshMinutes: 5,
