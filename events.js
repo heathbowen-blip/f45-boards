@@ -97,7 +97,8 @@
       detail: find(function (x) { return x.indexOf("detail") > -1; }),
       loc:    find(function (x) { return x === "location"; }),
       addr:   find(function (x) { return x.indexOf("off-site") > -1 || x.indexOf("address") > -1; }),
-      hide:   find(function (x) { return x === "hide"; })
+      hide:   find(function (x) { return x === "hide"; }),
+      postTo: find(function (x) { return x.indexOf("post to") === 0; })
     };
     if (c.start < 0) c.start = find(function (x) { return /\bdate\b/.test(x) && !/end|submission/.test(x); });
     if (c.studio < 0 || c.name < 0 || c.start < 0) throw new Error("Sheet is missing a Studio, Event name or Start date column.");
@@ -113,7 +114,10 @@
       var detail = g(c.detail), addr = g(c.addr), t = parseTime(g(c.time));
       if (/off/i.test(g(c.loc)) && addr && detail.indexOf(addr) < 0) detail = detail ? detail + " · " + addr : addr;
       if (t && detail.indexOf(t.label) < 0) detail = detail ? t.label + " · " + detail : t.label;
-      out.push({ studio: g(c.studio), name: g(c.name), start: start, end: end, detail: detail, min: t ? t.min : -1 });
+      // Admin link: "Post to" (All / AZ only / CO only) overrides the Studio answer
+      var target = g(c.postTo);
+      var where = target && !/^one\b/i.test(target) ? target : g(c.studio);
+      out.push({ studio: where, name: g(c.name), start: start, end: end, detail: detail, min: t ? t.min : -1 });
     }
     return out;
   }
@@ -121,7 +125,16 @@
   function forThisStudio(all) {
     var key = norm(studio.name), today = todayISO();
     return all
-      .filter(function (e) { var s = norm(e.studio); return s === key || s === norm(slug); })
+      .filter(function (e) {
+        // "All studios" shows everywhere; a list ("Belmar, Parker") shows at each one listed
+        return String(e.studio).split(/[,;\n]+/).some(function (part) {
+          var s = norm(part);
+          if (/^\s*all\b/i.test(part)) return true;                         // All studios
+          if (/^\s*(az|arizona)\b/i.test(part)) return TZ === "America/Phoenix"; // AZ only
+          if (/^\s*(co|colorado)\b/i.test(part)) return TZ === "America/Denver";  // CO only
+          return s === key || s === norm(slug);
+        });
+      })
       .filter(function (e) { return e.end >= today; })   // drops off the day after it ends
       .sort(function (a, b) {
         if (a.start !== b.start) return a.start < b.start ? -1 : 1;
@@ -265,6 +278,21 @@
   setInterval(function () { if (demo || CFG.eventsCsvUrl) refresh(); }, (CFG.refreshMinutes || 5) * 60000);
   // Re-check the date every 10 minutes so past events drop off right after midnight even if the sheet is unreachable
   setInterval(function () { if (lastAll && !demo) render(forThisStudio(lastAll)); }, 10 * 60000);
-  // Full reload every 6 hours to pick up any design/code updates
-  setTimeout(function () { location.reload(); }, 6 * 3600000);
+  // Check for site updates every 10 minutes. When version.txt changes,
+  // reload with a fresh URL so the TV can't keep serving a cached copy.
+  var loadedVersion = null;
+  function checkVersion() {
+    fetch("./version.txt?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.text() : null; })
+      .then(function (v) {
+        if (!v) return; v = v.trim();
+        if (loadedVersion === null) { loadedVersion = v; return; }
+        if (v !== loadedVersion) {
+          var u = new URL(location.href); u.searchParams.set("v", v); location.replace(u.toString());
+        }
+      }).catch(function () {});
+  }
+  checkVersion(); setInterval(checkVersion, 10 * 60000);
+  // Safety net: fresh reload every 6 hours regardless
+  setTimeout(function () { var u = new URL(location.href); u.searchParams.set("v", Date.now()); location.replace(u.toString()); }, 6 * 3600000);
 })();
