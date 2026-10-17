@@ -52,6 +52,18 @@
     return null;
   }
 
+  // Accepts 6:00 PM, 06:00 PM, 6 PM, 18:00. Returns {label:"6:00 PM", min:1080} or null
+  function parseTime(raw) {
+    var m = String(raw || "").trim().match(/^(\d{1,2})(?::(\d{2}))?(?::\d{2})?\s*([ap])?\.?m?\.?$/i);
+    if (!m) return null;
+    var h = +m[1], mi = +(m[2] || 0), ap = m[3] ? m[3].toLowerCase() : null;
+    if (h > 23 || mi > 59) return null;
+    if (ap === "p" && h < 12) h += 12;
+    if (ap === "a" && h === 12) h = 0;
+    var h12 = h % 12 === 0 ? 12 : h % 12;
+    return { label: h12 + ":" + pad(mi) + " " + (h < 12 ? "AM" : "PM"), min: h * 60 + mi };
+  }
+
   // RFC 4180 CSV parser (handles quotes, commas and line breaks inside cells)
   function parseCSV(text) {
     var rows = [], row = [], cell = "", q = false;
@@ -81,6 +93,7 @@
       name:   find(function (x) { return /\bname\b/.test(x) && x.indexOf("studio") < 0; }),
       start:  find(function (x) { return x.indexOf("start date") > -1; }),
       end:    find(function (x) { return x.indexOf("end date") > -1; }),
+      time:   find(function (x) { return x.indexOf("time") > -1 && x.indexOf("end") < 0; }),
       detail: find(function (x) { return x.indexOf("detail") > -1; }),
       loc:    find(function (x) { return x === "location"; }),
       addr:   find(function (x) { return x.indexOf("off-site") > -1 || x.indexOf("address") > -1; }),
@@ -97,9 +110,10 @@
       if (g(c.hide)) continue; // anything typed in a "Hide" column removes the event
       var end = parseDate(g(c.end));
       if (!end || end < start) end = start;
-      var detail = g(c.detail), addr = g(c.addr);
+      var detail = g(c.detail), addr = g(c.addr), t = parseTime(g(c.time));
       if (/off/i.test(g(c.loc)) && addr && detail.indexOf(addr) < 0) detail = detail ? detail + " · " + addr : addr;
-      out.push({ studio: g(c.studio), name: g(c.name), start: start, end: end, detail: detail });
+      if (t && detail.indexOf(t.label) < 0) detail = detail ? t.label + " · " + detail : t.label;
+      out.push({ studio: g(c.studio), name: g(c.name), start: start, end: end, detail: detail, min: t ? t.min : -1 });
     }
     return out;
   }
@@ -109,7 +123,11 @@
     return all
       .filter(function (e) { var s = norm(e.studio); return s === key || s === norm(slug); })
       .filter(function (e) { return e.end >= today; })   // drops off the day after it ends
-      .sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.start ? 1 : a.name.localeCompare(b.name); })
+      .sort(function (a, b) {
+        if (a.start !== b.start) return a.start < b.start ? -1 : 1;
+        if ((a.min || -1) !== (b.min || -1)) return (a.min || -1) - (b.min || -1);
+        return a.name.localeCompare(b.name);
+      })
       .slice(0, CFG.maxEvents || 5);
   }
 
@@ -135,11 +153,50 @@
     if (sm === em) return [MONTHS[sm], sd + "–" + ed];
     return [MONTHS[sm] + "–" + MONTHS[em], sd + "–" + ed];
   }
+  // Background photos rotate every 30 seconds with a soft crossfade.
+  // The choice is based on the clock, so even if OptiSigns reloads the page
+  // each time it comes up in the playlist, members still see a new photo.
+  var BGS = ["bg-1.jpg", "bg-2.jpg", "bg-3.jpg", "bg-4.jpg", "bg-5.jpg", "bg-6.jpg"];
+  var BG_MS = 30 * 1000, bgShown = -1;
+  function rotateBg() {
+    var i = Math.floor(Date.now() / BG_MS) % BGS.length;
+    if (i === bgShown) return;
+    var a = document.getElementById("bgA"), b = document.getElementById("bgB");
+    if (!a || !b) return;
+    var front = +a.style.opacity === 0 ? b : a, back = front === a ? b : a;
+    if (bgShown === -1) { front.src = "./" + BGS[i]; bgShown = i; return; }
+    back.onload = function () { back.style.opacity = 1; front.style.opacity = 0; };
+    back.src = "./" + BGS[i]; bgShown = i;
+    var n = new Image(); n.src = "./" + BGS[(i + 1) % BGS.length]; // preload next
+  }
+  rotateBg(); setInterval(rotateBg, 1000);
+
+  // Seasonal looks switch on automatically by month (studio time zone).
+  // Preview with ?theme=irish, ?theme=july, ?theme=pink or ?theme=holiday
+  var THEMES = {
+    "03": { cls: "irish",
+            badge: '<svg viewBox="0 0 60 64" aria-hidden="true" style="width:50px;height:54px"><g fill="#1E9E4F"><circle cx="30" cy="14" r="11"/><circle cx="16" cy="30" r="11"/><circle cx="44" cy="30" r="11"/><circle cx="30" cy="27" r="9"/></g><path d="M30 34c2 10 6 18 14 26" stroke="#1E9E4F" stroke-width="5" fill="none" stroke-linecap="round"/></svg><span>Feeling lucky<br>this March</span>' },
+    "07": { cls: "july",
+            badge: '<svg viewBox="0 0 60 58" aria-hidden="true" style="width:52px;height:50px"><polygon points="30,2 37,21 58,22 41,35 47,56 30,44 13,56 19,35 2,22 23,21" fill="#D6001C" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg><span>Happy<br>Independence Day</span>' },
+    "10": { cls: "pink",
+            badge: '<svg viewBox="0 0 44 62" aria-hidden="true"><path d="M22 4c-7 0-11 5-11 11 0 5 3 10 7 15L4 56l7 3 11-20 11 20 7-3-14-26c4-5 7-10 7-15 0-6-4-11-11-11zm0 7c3 0 5 2 5 4 0 3-2 6-5 10-3-4-5-7-5-10 0-2 2-4 5-4z" fill="#E8458B"/></svg><span>Breast Cancer<br>Awareness Month</span>' },
+    "12": { cls: "holiday",
+            badge: '<svg viewBox="0 0 60 60" aria-hidden="true" style="width:52px;height:52px"><g stroke="#DCE9F8" stroke-width="4" stroke-linecap="round" fill="none"><path d="M30 4v52M7.5 17l45 26M7.5 43l45-26"/><path d="M23 9l7 6 7-6M23 51l7-6 7 6M6 26l9-3-2-9M54 34l-9 3 2 9M6 34l9 3-2 9M54 26l-9-3 2-9"/></g></svg><span>Happy Holidays<br>from our F45 family</span>' }
+  };
+  function applyTheme() {
+    var q = (location.search.match(/[?&]theme=([a-z]+)/) || [])[1], key = todayISO().slice(5, 7), t = null;
+    for (var k in THEMES) if (THEMES[k].cls === q) t = THEMES[k];
+    if (!t && !q) t = THEMES[key] || null;
+    var stage = document.getElementById("stage"), aware = document.getElementById("aware");
+    for (var k2 in THEMES) stage.classList.remove(THEMES[k2].cls);
+    if (t) { stage.classList.add(t.cls); if (aware) aware.innerHTML = t.badge; }
+  }
   function render(events) {
     var now = new Date();
     document.getElementById("month").textContent =
       new Intl.DateTimeFormat("en-US", { timeZone: TZ, month: "long" }).format(now);
     document.getElementById("studio").textContent = "F45 " + studio.name;
+    applyTheme();
     var list = document.getElementById("list");
     list.innerHTML = "";
     if (!events.length) {

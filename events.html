@@ -17,7 +17,8 @@
     background:var(--navy); font-family:Montserrat,'Helvetica Neue',Arial,sans-serif;
     transform-origin:center center;
   }
-  .bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 30%; }
+  .bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 30%;
+    transition:opacity 2s ease; }
   .scrim { position:absolute; inset:0;
     background:linear-gradient(90deg, rgba(33,21,81,.95) 0%, rgba(33,21,81,.85) 35%, rgba(33,21,81,.55) 100%); }
   .layout { position:absolute; inset:0; box-sizing:border-box; padding:70px 80px; display:flex; gap:80px; }
@@ -42,6 +43,70 @@
   .day { font-family:'Bebas Neue',Impact,sans-serif; font-size:104px; line-height:.85; margin-top:6px; }
   .day.range { font-size:76px; margin-top:12px; }
   .ticket.empty .body { align-items:flex-start; }
+  /* October: Breast Cancer Awareness theme (auto on in October, ?theme=pink to preview) */
+  .stage.pink { --red:#E8458B; }
+  .stage.pink .bg { filter:grayscale(1) contrast(1.05); }
+  .stage.pink .tint { position:absolute; inset:0; background:#E8458B; mix-blend-mode:color; opacity:.85; }
+  .stage.pink .scrim { background:linear-gradient(90deg, rgba(33,21,81,.96) 0%, rgba(33,21,81,.86) 35%, rgba(120,20,80,.45) 100%); }
+  .stage.pink .rule { background:#E8458B; }
+  .aware { display:none; align-items:center; gap:16px; margin-top:30px; font-size:22px; font-weight:800;
+    letter-spacing:3px; line-height:1.3; color:#F8C3DA; text-transform:uppercase; }
+  .aware svg { width:44px; height:62px; flex-shrink:0; }
+  .stage.pink .aware { display:flex; }
+  /* December: holiday theme (auto on in December, ?theme=holiday to preview) */
+  .stage.holiday .bg { filter:grayscale(1) contrast(1.05); }
+  .stage.holiday .tint { position:absolute; inset:0; background:#4F8FD6; mix-blend-mode:color; opacity:.7; }
+  .stage.holiday .scrim { background:linear-gradient(90deg, rgba(33,21,81,.96) 0%, rgba(33,21,81,.84) 35%, rgba(20,40,90,.45) 100%); }
+  .stage.holiday .rule { background:#fff; }
+  .stage.holiday .aware { display:flex; color:#DCE9F8; }
+  .snow { display:none; position:absolute; left:0; right:0; top:-1080px; height:2160px; pointer-events:none;
+    background-image:
+      radial-gradient(7px 7px at 328px 414px, rgba(255,255,255,0.55) 50%, transparent 51%),
+      radial-gradient(5px 5px at 1701px 106px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(9px 9px at 138px 529px, rgba(255,255,255,0.7) 50%, transparent 51%),
+      radial-gradient(5px 5px at 196px 454px, rgba(255,255,255,0.95) 50%, transparent 51%),
+      radial-gradient(5px 5px at 512px 102px, rgba(255,255,255,0.95) 50%, transparent 51%),
+      radial-gradient(5px 5px at 1713px 136px, rgba(255,255,255,0.7) 50%, transparent 51%),
+      radial-gradient(9px 9px at 146px 416px, rgba(255,255,255,0.55) 50%, transparent 51%),
+      radial-gradient(6px 6px at 115px 146px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(8px 8px at 315px 130px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(9px 9px at 1691px 195px, rgba(255,255,255,0.55) 50%, transparent 51%),
+      radial-gradient(9px 9px at 1189px 202px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(5px 5px at 1141px 74px, rgba(255,255,255,0.55) 50%, transparent 51%),
+      radial-gradient(9px 9px at 441px 518px, rgba(255,255,255,0.95) 50%, transparent 51%),
+      radial-gradient(7px 7px at 973px 474px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(7px 7px at 528px 194px, rgba(255,255,255,0.7) 50%, transparent 51%),
+      radial-gradient(5px 5px at 1196px 317px, rgba(255,255,255,0.95) 50%, transparent 51%),
+      radial-gradient(7px 7px at 1513px 469px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(9px 9px at 169px 130px, rgba(255,255,255,0.95) 50%, transparent 51%),
+      radial-gradient(6px 6px at 1570px 360px, rgba(255,255,255,0.7) 50%, transparent 51%),
+      radial-gradient(8px 8px at 883px 50px, rgba(255,255,255,0.55) 50%, transparent 51%),
+      radial-gradient(9px 9px at 1193px 331px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(7px 7px at 1237px 518px, rgba(255,255,255,0.95) 50%, transparent 51%),
+      radial-gradient(5px 5px at 1740px 105px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(8px 8px at 1447px 76px, rgba(255,255,255,0.55) 50%, transparent 51%),
+      radial-gradient(7px 7px at 1345px 466px, rgba(255,255,255,0.85) 50%, transparent 51%),
+      radial-gradient(8px 8px at 1836px 365px, rgba(255,255,255,0.55) 50%, transparent 51%);
+    background-size:1920px 540px; animation:snowfall 40s linear infinite; }
+  .stage.holiday .snow { display:block; }
+  @keyframes snowfall { from { transform:translateY(0); } to { transform:translateY(1080px); } }
+  /* March: St. Patrick's theme (auto on in March, ?theme=irish to preview) */
+  .stage.irish { --red:#1E9E4F; }
+  .stage.irish .bg { filter:grayscale(1) contrast(1.05); }
+  .stage.irish .tint { position:absolute; inset:0; background:#1E9E4F; mix-blend-mode:color; opacity:.8; }
+  .stage.irish .scrim { background:linear-gradient(90deg, rgba(33,21,81,.96) 0%, rgba(33,21,81,.85) 35%, rgba(10,70,40,.45) 100%); }
+  .stage.irish .rule { background:#1E9E4F; }
+  .stage.irish .aware { display:flex; color:#BFE8CC; }
+  /* July: Independence Day theme (auto on in July, ?theme=july to preview) */
+  .stage.july .bg { filter:grayscale(1) contrast(1.05); }
+  .stage.july .tint { position:absolute; inset:0; background:#3B6FD1; mix-blend-mode:color; opacity:.6; }
+  .stage.july .scrim { background:linear-gradient(90deg, rgba(33,21,81,.96) 0%, rgba(33,21,81,.85) 35%, rgba(25,35,95,.5) 100%); }
+  .stage.july .rule { background:#fff; }
+  .stage.july .aware { display:flex; color:#fff; }
+  .stars { display:none; position:absolute; inset:0; pointer-events:none; opacity:.55;
+    background-image:radial-gradient(circle at 50% 50%, rgba(255,255,255,.9) 0 2px, transparent 3px);
+    background-size:64px 64px; -webkit-mask-image:linear-gradient(90deg, transparent 30%, #000 100%); mask-image:linear-gradient(90deg, transparent 30%, #000 100%); }
+  .stage.july .stars { display:block; }
   .notice { position:fixed; left:0; right:0; bottom:0; padding:10px 16px; font:600 14px Montserrat,Arial,sans-serif;
     background:#fff3cd; color:#5c4400; text-align:center; z-index:5; }
 </style>
@@ -49,8 +114,12 @@
 <body>
 <div id="viewport">
   <div class="stage" id="stage">
-    <img class="bg" src="./events-bg.jpg" alt="" aria-hidden="true">
+    <img class="bg" id="bgA" src="./bg-1.jpg" alt="" aria-hidden="true">
+    <img class="bg" id="bgB" src="./bg-1.jpg" alt="" aria-hidden="true" style="opacity:0">
+    <div class="tint" aria-hidden="true"></div>
     <div class="scrim" aria-hidden="true"></div>
+    <div class="snow" aria-hidden="true"></div>
+    <div class="stars" aria-hidden="true"></div>
     <div class="layout">
       <div class="left">
         <img class="logo" src="./f45-logo-white.png" alt="F45 Training">
@@ -59,6 +128,10 @@
           <div class="title">Upcoming</div>
           <div class="title red">Events</div>
           <div class="rule"></div>
+          <div class="aware" id="aware">
+            <svg viewBox="0 0 44 62" aria-hidden="true"><path d="M22 4c-7 0-11 5-11 11 0 5 3 10 7 15L4 56l7 3 11-20 11 20 7-3-14-26c4-5 7-10 7-15 0-6-4-11-11-11zm0 7c3 0 5 2 5 4 0 3-2 6-5 10-3-4-5-7-5-10 0-2 2-4 5-4z" fill="#E8458B"/></svg>
+            <span>Breast Cancer<br>Awareness Month</span>
+          </div>
         </div>
         <div class="studio" id="studio"></div>
       </div>
