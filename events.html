@@ -107,6 +107,11 @@
     background-image:radial-gradient(circle at 50% 50%, rgba(255,255,255,.9) 0 2px, transparent 3px);
     background-size:64px 64px; -webkit-mask-image:linear-gradient(90deg, transparent 30%, #000 100%); mask-image:linear-gradient(90deg, transparent 30%, #000 100%); }
   .stage.july .stars { display:block; }
+  /* Promo takeover: a full-screen slide that covers the board while a promo is live (see promos.json) */
+  #promo { position:fixed; inset:0; z-index:8; display:flex; align-items:center; justify-content:center; background:#14142b;
+    opacity:0; visibility:hidden; transition:opacity .8s ease, visibility .8s; }
+  #promo.on { opacity:1; visibility:visible; }
+  #promo img { width:100vw; height:100vh; object-fit:contain; }
   .notice { position:fixed; left:0; right:0; bottom:0; padding:10px 16px; font:600 14px Montserrat,Arial,sans-serif;
     background:#fff3cd; color:#5c4400; text-align:center; z-index:5; }
 </style>
@@ -139,6 +144,7 @@
     </div>
   </div>
 </div>
+<div id="promo"><img id="promoImg" alt=""></div>
 <div class="notice" id="notice" hidden></div>
 <script>
   // Always load the newest code (TV players love to cache old copies)

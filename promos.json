@@ -1,0 +1,12 @@
+{
+  "rotation": { "slotSeconds": 20, "eventsEvery": 4 },
+  "promos": [
+    {
+      "name": "Friendsgiving Free Week 2026",
+      "image": "promos/friendsgiving-2026.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": ["all"]
+    }
+  ]
+}

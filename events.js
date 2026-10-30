@@ -262,6 +262,63 @@
       });
   }
 
+  // ---------- promo takeover ----------
+  // When promos.json lists a promo that is live today for this studio, a full-screen
+  // slide covers the events board. Once the end date passes, the cover lifts on its own
+  // and the board shows again. Preview a date with &promodate=2026-11-18
+  function promoApplies(p) {
+    var list = p.studios && p.studios.length ? p.studios : ["all"];
+    return list.some(function (s) {
+      s = String(s).toLowerCase().trim();
+      if (s === "all") return true;
+      if (s === "az") return TZ === "America/Phoenix";
+      if (s === "co") return TZ === "America/Denver";
+      return s === slug;
+    });
+  }
+  // Optional "rotation" in promos.json, e.g. {"slotSeconds":20,"eventsEvery":4}, brings the
+  // events board back one slot in every four (3 promo, 1 events). It runs off the clock, so it
+  // works whether or not OptiSigns reloads the page each time the slide comes up.
+  // Leave "rotation" out and the promo covers the board the whole time it is live.
+  var promoShown = "", promoLive = false, promoReady = false, promoRot = null;
+  // In every group of N slots exactly one shows events, but which one is shuffled group by group.
+  // That keeps the 3-to-1 balance without locking onto the playlist's loop length (a fixed
+  // position would hit the same spot every time when the loop is a multiple of the cycle).
+  function mix(n) {
+    n = (n ^ 61) ^ (n >>> 16); n = (n + (n << 3)) | 0; n = n ^ (n >>> 4);
+    n = Math.imul(n, 0x27d4eb2d); n = n ^ (n >>> 15); return n >>> 0;
+  }
+  function promoTurn() {
+    if (!promoRot || !(promoRot.eventsEvery > 1)) return true;
+    var n = promoRot.eventsEvery;
+    var slot = Math.floor(Date.now() / ((promoRot.slotSeconds || 20) * 1000));
+    return slot % n !== mix(Math.floor(slot / n)) % n;
+  }
+  function applyPromo() {
+    document.getElementById("promo").className = (promoLive && promoReady && promoTurn()) ? "on" : "";
+  }
+  function checkPromo() {
+    var day = params.get("promodate") || todayISO();
+    fetch("./promos.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("promos " + r.status); return r.json(); })
+      .then(function (cfg) {
+        var live = (cfg.promos || [])
+          .filter(function (p) { return p.start <= day && day <= p.end && promoApplies(p); })
+          .sort(function (a, b) { return a.start < b.start ? 1 : -1; })[0];
+        promoRot = cfg.rotation || null;
+        promoLive = !!live;
+        if (live && promoShown !== live.image) {
+          var img = document.getElementById("promoImg");
+          promoReady = false; promoShown = live.image;
+          img.onload = function () { promoReady = true; applyPromo(); };
+          img.src = "./" + live.image;
+        } else if (!live) { promoShown = ""; promoReady = false; }
+        applyPromo();
+      })
+      .catch(function () { /* if promos.json can't be read, leave the screen as it is */ });
+  }
+  setInterval(applyPromo, 1000);
+
   // ---------- start ----------
   if (!studio) {
     var keys = Object.keys(CFG.studios || {});
@@ -272,6 +329,7 @@
   if (!demo && !CFG.eventsCsvUrl) {
     notice("No sheet connected yet. Paste the CSV link into js/config.js, or add &demo to the link to preview.");
   }
+  checkPromo(); setInterval(checkPromo, 5 * 60000);
   lastAll = load();
   if (lastAll) render(forThisStudio(lastAll)); else render([]);
   if (demo || CFG.eventsCsvUrl) refresh();
