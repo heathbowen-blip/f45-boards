@@ -1,12 +1,107 @@
 {
-  "rotation": { "slotSeconds": 20, "eventsEvery": 4 },
+  "rotation": {
+    "slotSeconds": 20,
+    "eventsEvery": 4
+  },
   "promos": [
     {
-      "name": "Friendsgiving Free Week 2026",
-      "image": "promos/friendsgiving-2026.jpg",
+      "name": "Friendsgiving Free Week 2026 - Chandler North",
+      "image": "promos/friendsgiving-2026-chandler-north.jpg",
       "start": "2026-11-09",
       "end": "2026-11-22",
-      "studios": ["all"]
+      "studios": [
+        "chandler-north"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Uptown Phoenix",
+      "image": "promos/friendsgiving-2026-uptown-phoenix.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "uptown-phoenix"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Santan Village",
+      "image": "promos/friendsgiving-2026-santan-village.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "santan-village"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Gilbert & the 202",
+      "image": "promos/friendsgiving-2026-gilbert-202.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "gilbert-202"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Pecans of Queen Creek",
+      "image": "promos/friendsgiving-2026-pecans-queen-creek.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "pecans-queen-creek"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Belmar",
+      "image": "promos/friendsgiving-2026-belmar.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "belmar"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Golden Triangle",
+      "image": "promos/friendsgiving-2026-golden-triangle.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "golden-triangle"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - North Thornton",
+      "image": "promos/friendsgiving-2026-north-thornton.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "north-thornton"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Parker",
+      "image": "promos/friendsgiving-2026-parker.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "parker"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - Uptown Denver",
+      "image": "promos/friendsgiving-2026-uptown-denver.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "uptown-denver"
+      ]
+    },
+    {
+      "name": "Friendsgiving Free Week 2026 - West Highland",
+      "image": "promos/friendsgiving-2026-west-highland.jpg",
+      "start": "2026-11-09",
+      "end": "2026-11-22",
+      "studios": [
+        "west-highland"
+      ]
     }
   ]
 }
