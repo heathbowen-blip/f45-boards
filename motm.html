@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Member of the Month</title>
+<style>
+  html,body{margin:0;height:100%;background:#211551;overflow:hidden}
+  img{position:fixed;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+</style></head>
+<body>
+<!-- Lobby slide for OptiSigns: /motm.html?studio=<slug>  (slug uses _ or -, e.g. santan_village).
+     The finished 1920x1080 slide lives at a fixed raw URL and is overwritten each month. -->
+<img id="s" alt="Member of the Month">
+<script>
+  var studio = (new URLSearchParams(location.search).get('studio') || '').toLowerCase().replace(/-/g, '_').replace(/[^a-z0-9_]/g, '');
+  var base = 'https://raw.githubusercontent.com/heathbowen-blip/f45-social-assets/main/motm-live/current/';
+  // cache-bust in 10 minute steps so a monthly overwrite shows up on the next reload
+  document.getElementById('s').src = base + studio + '.png?t=' + Math.floor(Date.now() / 600000);
+</script>
+</body></html>
