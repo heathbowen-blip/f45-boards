@@ -102,6 +102,105 @@
       "studios": [
         "west-highland"
       ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Chandler North",
+      "image": "promos/thanksgiving-2026-chandler-north.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "chandler-north"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Uptown Phoenix",
+      "image": "promos/thanksgiving-2026-uptown-phoenix.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "uptown-phoenix"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Santan Village",
+      "image": "promos/thanksgiving-2026-santan-village.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "santan-village"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Gilbert & the 202",
+      "image": "promos/thanksgiving-2026-gilbert-202.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "gilbert-202"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Pecans of Queen Creek",
+      "image": "promos/thanksgiving-2026-pecans-queen-creek.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "pecans-queen-creek"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Belmar",
+      "image": "promos/thanksgiving-2026-belmar.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "belmar"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Golden Triangle",
+      "image": "promos/thanksgiving-2026-golden-triangle.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "golden-triangle"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - North Thornton",
+      "image": "promos/thanksgiving-2026-north-thornton.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "north-thornton"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Parker",
+      "image": "promos/thanksgiving-2026-parker.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "parker"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - Uptown Denver",
+      "image": "promos/thanksgiving-2026-uptown-denver.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "uptown-denver"
+      ]
+    },
+    {
+      "name": "Thanksgiving Week Schedule 2026 - West Highland",
+      "image": "promos/thanksgiving-2026-west-highland.jpg",
+      "start": "2026-11-23",
+      "end": "2026-11-27",
+      "studios": [
+        "west-highland"
+      ]
     }
   ]
 }
